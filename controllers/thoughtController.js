@@ -1,5 +1,4 @@
-const Thoughts = require("../models/Thought")
-const User = require("../models/User")
+const { Thoughts, User } = require("../models")
 
 
 // ----------------- GET SINLGE THOUGHT ----------------- //
@@ -12,7 +11,7 @@ const getThoughtById = async (req, res) => {
     } catch (err) {
         console.error(err);
         res.status(500).json(err)
-    }
+    };
 };
 
 
@@ -24,7 +23,7 @@ const getAllThoughts = async (req, res) => {
     } catch (err) {
         console.error(err);
         res.status(500).json(err)
-    }
+    };
 };
 
 
@@ -43,8 +42,43 @@ const createThought = async (req, res) => {
     } catch (err) {
         console.error(err);
         res.status(500).json(err)
-    }
+    };
 };
 
 
 // ----------------- UPDATE THOUGHT ----------------- //
+const updateThought = async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const updatedThought = await Thoughts.findByIdAndUpdate(id, req.body);
+        res.status(200).json(updatedThought)
+    } catch (err) {
+        console.error(err);
+        res.status(500).json(err)
+    };
+};
+
+
+// ----------------- DELETE THOUGHT ----------------- //
+const deleteThought = async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const deletedThought = await Thoughts.findByIdAndDelete(id);
+        res.status(202).json({ message: "Thought successfully deleted!" });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json(err)
+    };
+};
+
+
+
+module.exports = {
+    getThoughtById,
+    getAllThoughts,
+    createThought,
+    updateThought,
+    deleteThought
+};
